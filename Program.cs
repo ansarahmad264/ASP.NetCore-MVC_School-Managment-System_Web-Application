@@ -1,4 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using SchoolManagmentSystem.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString
+    ("SMSDbContextConnection") ?? throw new InvalidOperationException
+    ("Connection string 'SMSDbContextConnection' not found.");
+
+builder.Services.AddDbContext<SMSDbContext>(options =>
+options.UseSqlServer(connectionString)); ;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
