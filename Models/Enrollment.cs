@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace SchoolManagmentSystem.Models
 {
@@ -19,7 +20,7 @@ namespace SchoolManagmentSystem.Models
         [Required]
         public EnrollmentStatus Status { get; set; }  // Now using the enum
 
-        // Navigation
+        [ValidateNever]
         public Student Student { get; set; }
     }
 
