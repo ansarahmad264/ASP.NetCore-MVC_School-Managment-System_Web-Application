@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace SchoolManagmentSystem.Models
 {
@@ -28,6 +29,7 @@ namespace SchoolManagmentSystem.Models
         public string PhoneNumber { get; set; }
 
         // Navigation
+        [ValidateNever]
         public ICollection<Enrollment> Enrollments { get; set; }
     }
 }
