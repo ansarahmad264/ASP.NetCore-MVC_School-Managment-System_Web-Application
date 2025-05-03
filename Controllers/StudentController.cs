@@ -21,11 +21,9 @@ namespace SchoolManagmentSystem.Controllers
         {
             if(ModelState.IsValid)
             {
-                var stdInfo = _studentRepository.AddStudent(student);
-                Console.WriteLine($"student id directly from passed objec {student.StudentId}");
-                Console.WriteLine($"Student ID saved: {stdInfo.StudentId + stdInfo.Name}");
-
-                return RedirectToAction("StudentEnrollment", "Enrollment", stdInfo);
+                _studentRepository.AddStudent(student);
+               
+                return RedirectToAction("StudentEnrollment", "Enrollment", student);
                                 
             }
             

@@ -2,7 +2,7 @@
 {
     public interface IStudentRepository
     {
-        public Student AddStudent(Student student);
+        public void AddStudent(Student student);
 
     }
 }
