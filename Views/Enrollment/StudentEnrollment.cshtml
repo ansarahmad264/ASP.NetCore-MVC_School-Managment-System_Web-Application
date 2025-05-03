@@ -4,54 +4,66 @@
     var student = ViewBag.StdInfo as SchoolManagmentSystem.Models.Student;
 }
 
-<h3 class="my-4">Enroll Student</h3>
+<h2 class="mb-4 fw-bold">📋 Enroll Student</h2>
 
 @if (student != null)
 {
-    <div class="card p-3 mb-4 shadow-sm">
-        <h5 class="card-title">Student Information</h5>
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <strong>Student Information</strong>
+        </div>
         <div class="card-body">
-            <p><strong>Name:</strong> @student.Name</p>
-            <p><strong>CNIC:</strong> @student.CNIC</p>
-            <p><strong>ID:</strong> @student.StudentId</p>
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Name:</dt>
+                <dd class="col-sm-9">@student.Name</dd>
+
+                <dt class="col-sm-3">CNIC:</dt>
+                <dd class="col-sm-9">@student.CNIC</dd>
+
+                <dt class="col-sm-3">ID:</dt>
+                <dd class="col-sm-9">@student.StudentId</dd>
+            </dl>
         </div>
     </div>
 }
 
 <form asp-action="StudentEnrollment" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
+    <div asp-validation-summary="All" class="alert alert-danger"></div>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Class" class="form-label fw-semibold"></label>
+                    <input asp-for="Class" class="form-control" placeholder="e.g., 10th Grade" />
+                    <span asp-validation-for="Class" class="text-danger small"></span>
+                </div>
 
-    <div class="row g-3">
-        <div class="col-md-6">
-            <label asp-for="Class" class="form-label"></label>
-            <input asp-for="Class" class="form-control" />
-            <span asp-validation-for="Class" class="text-danger"></span>
-        </div>
+                <div class="col-md-6">
+                    <label asp-for="Section" class="form-label fw-semibold"></label>
+                    <input asp-for="Section" class="form-control" placeholder="e.g., A, B, C" />
+                    <span asp-validation-for="Section" class="text-danger small"></span>
+                </div>
 
-        <div class="col-md-6">
-            <label asp-for="Section" class="form-label"></label>
-            <input asp-for="Section" class="form-control" />
-            <span asp-validation-for="Section" class="text-danger"></span>
-        </div>
+                <div class="col-md-6">
+                    <label asp-for="Status" class="form-label fw-semibold"></label>
+                    <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<SchoolManagmentSystem.Models.EnrollmentStatus>()">
+                        <option value="">-- Select Status --</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger small"></span>
+                </div>
 
-        <div class="col-md-6">
-            <label asp-for="Status" class="form-label"></label>
-            <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<SchoolManagmentSystem.Models.EnrollmentStatus>()">
-                <option value="">-- Select Status --</option>
-            </select>
-            <span asp-validation-for="Status" class="text-danger"></span>
-        </div>
+                <input type="hidden" asp-for="StudentId" value="@student?.StudentId" />
 
-        <input type="hidden" asp-for="StudentId" value="@student?.StudentId" />
-
-        <div class="col-12 mt-3">
-            <button type="submit" class="btn btn-primary">Submit Enrollment</button>
+                <div class="col-12 mt-4">
+                    <button type="submit" class="btn btn-success px-4 py-2">
+                        ✅ Submit Enrollment
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </form>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @Html.Partial("_ValidationScriptsPartial")
 }
