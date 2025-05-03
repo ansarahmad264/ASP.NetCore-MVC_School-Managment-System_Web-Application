@@ -13,6 +13,9 @@ options.UseSqlServer(connectionString)); ;
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

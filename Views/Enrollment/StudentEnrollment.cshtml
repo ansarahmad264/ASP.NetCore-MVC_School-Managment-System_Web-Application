@@ -1,0 +1,57 @@
+﻿@model SchoolManagmentSystem.Models.Enrollment
+
+@{
+    var student = ViewBag.StdInfo as SchoolManagmentSystem.Models.Student;
+}
+
+<h3 class="my-4">Enroll Student</h3>
+
+@if (student != null)
+{
+    <div class="card p-3 mb-4 shadow-sm">
+        <h5 class="card-title">Student Information</h5>
+        <div class="card-body">
+            <p><strong>Name:</strong> @student.Name</p>
+            <p><strong>CNIC:</strong> @student.CNIC</p>
+            <p><strong>ID:</strong> @student.StudentId</p>
+        </div>
+    </div>
+}
+
+<form asp-action="StudentEnrollment" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label asp-for="Class" class="form-label"></label>
+            <input asp-for="Class" class="form-control" />
+            <span asp-validation-for="Class" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="Section" class="form-label"></label>
+            <input asp-for="Section" class="form-control" />
+            <span asp-validation-for="Section" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="Status" class="form-label"></label>
+            <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<SchoolManagmentSystem.Models.EnrollmentStatus>()">
+                <option value="">-- Select Status --</option>
+            </select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" asp-for="StudentId" value="@student?.StudentId" />
+
+        <div class="col-12 mt-3">
+            <button type="submit" class="btn btn-primary">Submit Enrollment</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
