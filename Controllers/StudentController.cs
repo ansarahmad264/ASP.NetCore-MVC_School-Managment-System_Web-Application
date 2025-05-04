@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SchoolManagmentSystem.Models;
+using SchoolManagmentSystem.ViewModels;
 
 namespace SchoolManagmentSystem.Controllers
 {
@@ -29,6 +30,22 @@ namespace SchoolManagmentSystem.Controllers
             
             return View(student);
             
+        }
+
+        [HttpGet]
+        public IActionResult SearchStudent()
+        {
+            return View(new SearchStudentViewModel());
+        }
+        [HttpPost]
+        public IActionResult SearchStudent(SearchStudentViewModel searchStudent)
+        {
+            if (ModelState.IsValid)
+            {
+                var searchResult = _studentRepository.SearchStudent(searchStudent);
+                return View("SearchResult", searchResult);
+            }
+            return View(searchStudent);
         }
     }
 }

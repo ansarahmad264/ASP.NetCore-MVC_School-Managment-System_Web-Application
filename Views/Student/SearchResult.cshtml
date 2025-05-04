@@ -1,0 +1,69 @@
+﻿@model List<Student>
+
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Search Results</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning" role="alert">
+            No students found.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover shadow-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Father's Name</th>
+                        <th>Address</th>
+                        <th>CNIC</th>
+                        <th>Date of Birth</th>
+                        <th>Gender</th>
+                        <th>Student ID</th>
+                        <th>Enrollments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in Model)
+                    {
+                        <tr>
+                            <td>@student.Name</td>
+                            <td>@student.FatherName</td>
+                            <td>@student.Address</td>
+                            <td>@student.CNIC</td>
+                            <td>@student.DateOfBirth</td>
+                            <td>@student.Gender</td>
+                            <td>@student.StudentId</td>
+                            <td>
+                                @foreach (var enrollment in student.Enrollments)
+                                {
+                                    <div class="mb-2 p-2 border rounded bg-light">
+                                        <div><strong>Class:</strong> @enrollment.Class</div>
+                                        <div><strong>Section:</strong> @enrollment.Section</div>
+                                        <div>
+                                            <strong>Status:</strong>
+                                            <span class="badge
+                                                @(enrollment.Status == EnrollmentStatus.CurrentlyEnrolled ? "bg-success" :
+                                                enrollment.Status == EnrollmentStatus.Promoted ? "bg-success" :
+                                                enrollment.Status == EnrollmentStatus.Failed  ? "bg-secondary" :
+                                                enrollment.Status == EnrollmentStatus.DroppedOut ? "bg-secondary" :
+                                                "bg-warning")">
+                                                @enrollment.Status
+                                            </span>
+                                        </div>
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
