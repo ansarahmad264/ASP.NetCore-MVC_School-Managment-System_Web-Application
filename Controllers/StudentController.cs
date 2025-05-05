@@ -47,5 +47,11 @@ namespace SchoolManagmentSystem.Controllers
             }
             return View(searchStudent);
         }
+
+        public IActionResult StudentDetails(int id)
+        {
+            var student  = _studentRepository.SearchStudentbyId(id);
+            return View("StudentDetails", student);
+        }
     }
 }

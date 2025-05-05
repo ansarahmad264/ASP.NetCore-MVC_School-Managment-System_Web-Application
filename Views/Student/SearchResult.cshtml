@@ -4,6 +4,27 @@
     ViewData["Title"] = "Search Results";
 }
 
+<style>
+    tr.clickable-row {
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        tr.clickable-row:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #f0f8ff;
+        }
+
+    .enrollment-box {
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 0.4rem;
+        background-color: #f8f9fa;
+    }
+</style>
+
 <div class="container mt-5">
     <h2 class="mb-4">Search Results</h2>
 
@@ -32,7 +53,7 @@
                 <tbody>
                     @foreach (var student in Model)
                     {
-                        <tr>
+                        <tr class="clickable-row" onclick="location.href='@Url.Action("StudentDetails", "Student", new { id = student.StudentId })'">
                             <td>@student.Name</td>
                             <td>@student.FatherName</td>
                             <td>@student.Address</td>
@@ -43,7 +64,7 @@
                             <td>
                                 @foreach (var enrollment in student.Enrollments)
                                 {
-                                    <div class="mb-2 p-2 border rounded bg-light">
+                                    <div class="enrollment-box">
                                         <div><strong>Class:</strong> @enrollment.Class</div>
                                         <div><strong>Section:</strong> @enrollment.Section</div>
                                         <div>

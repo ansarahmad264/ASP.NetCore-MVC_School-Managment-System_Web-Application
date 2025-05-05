@@ -51,6 +51,13 @@ namespace SchoolManagmentSystem.Models
             return query.ToList();
         }
 
+        public Student SearchStudentbyId(int studentId)
+        {
+            return _smsDbContext.Students.Include(s => s.Enrollments)
+                .SingleOrDefault(s => s.StudentId ==  studentId);
+                                            
+        }
+
     }
 
 
