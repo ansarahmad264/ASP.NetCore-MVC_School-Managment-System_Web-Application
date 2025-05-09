@@ -49,7 +49,7 @@
             @if (Model.Enrollments != null && Model.Enrollments.Any())
             {
                 foreach (var enrollment in Model.Enrollments)
-                {
+                {                   
                     <div class="border rounded p-3 mb-3 bg-light">
                         <div><strong>Class:</strong> @enrollment.Class</div>
                         <div><strong>Section:</strong> @enrollment.Section</div>
@@ -64,6 +64,12 @@
                                 @enrollment.Status
                             </span>
                         </div>
+
+                        <a asp-action="AddMarks"
+                           asp-controller="Exam"
+                           asp-route-enrollmentId="@enrollment.EnrollmentId"
+                           class="btn btn-outline-primary">Add Marks</a>
+
                     </div>
                 }
             }
@@ -71,10 +77,29 @@
             {
                 <p class="text-muted">No enrollment data available.</p>
             }
-
+           
             <div class="mt-4 d-flex gap-3">
                 <a href="#" class="btn btn-outline-success">Add Fee Details</a>
-                <a href="#" class="btn btn-outline-primary">Add Marks</a>
+                @if (Model.Enrollments != null && Model.Enrollments.Any())
+                {
+                    var currentEnrollment = Model.Enrollments.FirstOrDefault(e => e.Status == EnrollmentStatus.CurrentlyEnrolled);
+                    if (currentEnrollment != null)
+                    {
+                        <a asp-action="AddMarks"
+                           asp-controller="Exam"
+                           asp-route-enrollmentId="@currentEnrollment.EnrollmentId"
+                           class="btn btn-outline-primary">Add Marks</a>
+                    }
+                    else
+                    {
+                        <!-- Disable button if no currently enrolled status -->
+                        <button class="btn btn-outline-primary" disabled title="No active enrollment found">Add Marks</button>
+                    }
+                }
+                else
+                {
+                    <button class="btn btn-outline-primary" disabled title="No enrollment found">Add Marks</button>
+                }
                 <a href="@Url.Action("SearchStudent", "Student")" class="btn btn-outline-secondary">Back to Search</a>
             </div>
         </div>

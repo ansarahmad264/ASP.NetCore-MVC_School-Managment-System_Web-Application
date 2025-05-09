@@ -1,0 +1,96 @@
+﻿@model SchoolManagmentSystem.ViewModels.ExamResultViewModel
+
+@{
+    ViewData["Title"] = "Add Marks";
+}
+
+<h2>Add Marks</h2>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <strong>Student Information</strong>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Name:</dt>
+            <dd class="col-sm-9">@Model.Enrollment.Student.Name</dd>
+
+            <dt class="col-sm-3">Father Name:</dt>
+            <dd class="col-sm-9">@Model.Enrollment.Student.FatherName</dd>
+
+            <dt class="col-sm-3">Class</dt>
+            <dd class="col-sm-9">@Model.Enrollment.Class</dd>
+
+            <dt class="col-sm-3">Section:</dt>
+            <dd class="col-sm-9">@Model.Enrollment.Section</dd>
+        </dl>
+    </div>
+</div>
+
+<form asp-action="AddMarks" method="post">
+    <input type="hidden" asp-for="EnrollmentId" />
+
+    <div class="mb-3">
+        <label asp-for="Term" class="form-label"></label>
+        <input asp-for="Term" class="form-control" />
+        <span asp-validation-for="Term" class="text-danger"></span>
+    </div>
+
+    <h4>Subjects</h4>
+    <div id="subjectsContainer">
+        <!-- Initial Subject Row -->
+        <div class="subject-row row mb-3">
+            <div class="col-md-4">
+                <input name="SubjectMarks[0].SubjectName" class="form-control" placeholder="Subject Name" />
+            </div>
+            <div class="col-md-3">
+                <input name="SubjectMarks[0].ObtainedMarks" class="form-control" placeholder="Obtained Marks" />
+            </div>
+            <div class="col-md-3">
+                <input name="SubjectMarks[0].TotalMarks" class="form-control" placeholder="Total Marks" />
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-danger remove-subject">Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-secondary mb-3" id="addSubject">Add Subject</button>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+@section Scripts {
+    <script>
+        let index = 1;
+
+        document.getElementById('addSubject').addEventListener('click', function () {
+            const container = document.getElementById('subjectsContainer');
+            const newRow = document.createElement('div');
+            newRow.classList.add('subject-row', 'row', 'mb-3');
+
+            newRow.innerHTML = `
+                <div class="col-md-4">
+                    <input name="SubjectMarks[${index}].SubjectName" class="form-control" placeholder="Subject Name" />
+                </div>
+                <div class="col-md-3">
+                    <input name="SubjectMarks[${index}].ObtainedMarks" class="form-control" placeholder="Obtained Marks" />
+                </div>
+                <div class="col-md-3">
+                    <input name="SubjectMarks[${index}].TotalMarks" class="form-control" placeholder="Total Marks" />
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger remove-subject">Remove</button>
+                </div>
+            `;
+            container.appendChild(newRow);
+            index++;
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.classList.contains('remove-subject')) {
+                e.target.closest('.subject-row').remove();
+            }
+        });
+    </script>
+}

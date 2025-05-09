@@ -14,6 +14,7 @@ options.UseSqlServer(connectionString)); ;
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IExamRespository,ExamRepository>();
 builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
 
 var app = builder.Build();
