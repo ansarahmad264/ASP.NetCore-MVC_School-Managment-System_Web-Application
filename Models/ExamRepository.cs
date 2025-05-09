@@ -18,12 +18,14 @@ namespace SchoolManagmentSystem.Models
             };
 
             _context.ExamResults.Add(examResult);
+            _context.SaveChanges();
+            var examResultId = examResult.ExamResultId;
 
             foreach(var subjectMarks in  viewModel.SubjectMarks)
             {
                 var newsubjectMarks = new SubjectMark
                 {
-                    ExamResultId = examResult.ExamResultId,
+                    ExamResultId = examResultId,
                     SubjectName = subjectMarks.SubjectName,
                     ObtainedMarks = subjectMarks.ObtainedMarks,
                     TotalMarks = subjectMarks.TotalMarks

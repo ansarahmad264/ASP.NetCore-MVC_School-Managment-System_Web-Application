@@ -12,24 +12,28 @@
     </div>
     <div class="card-body">
         <dl class="row mb-0">
+
             <dt class="col-sm-3">Name:</dt>
-            <dd class="col-sm-9">@Model.Enrollment.Student.Name</dd>
+            <dd class="col-sm-9">@Model.Enrollment?.Student?.Name</dd>
 
             <dt class="col-sm-3">Father Name:</dt>
-            <dd class="col-sm-9">@Model.Enrollment.Student.FatherName</dd>
+            <dd class="col-sm-9">@Model.Enrollment?.Student?.FatherName</dd>
 
             <dt class="col-sm-3">Class</dt>
-            <dd class="col-sm-9">@Model.Enrollment.Class</dd>
+            <dd class="col-sm-9">@Model.Enrollment?.Class</dd>
 
             <dt class="col-sm-3">Section:</dt>
-            <dd class="col-sm-9">@Model.Enrollment.Section</dd>
+            <dd class="col-sm-9">@Model.Enrollment?.Section</dd>
         </dl>
     </div>
 </div>
 
 <form asp-action="AddMarks" method="post">
-    <input type="hidden" asp-for="EnrollmentId" />
 
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <input type="hidden" asp-for="EnrollmentId" />
+    
     <div class="mb-3">
         <label asp-for="Term" class="form-label"></label>
         <input asp-for="Term" class="form-control" />

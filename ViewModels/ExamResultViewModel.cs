@@ -1,4 +1,5 @@
-﻿using SchoolManagmentSystem.Models;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using SchoolManagmentSystem.Models;
 
 namespace SchoolManagmentSystem.ViewModels
 {
@@ -8,6 +9,7 @@ namespace SchoolManagmentSystem.ViewModels
         public string Term { get; set; }
 
         public List<SubjectMarkViewModel> SubjectMarks { get; set; }
+        [ValidateNever]
         public Enrollment Enrollment { get; set; }
     }
 }

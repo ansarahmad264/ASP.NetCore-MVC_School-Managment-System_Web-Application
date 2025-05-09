@@ -16,14 +16,17 @@ namespace SchoolManagmentSystem.Controllers
             _examRespository = examRespository;
         }
         [HttpGet]
-        public IActionResult AddMarks(int enrollId)
+        public IActionResult AddMarks(int EnrollmentId)
         {
+            Console.WriteLine($"Received enrollmentId: {EnrollmentId}");
+
             var enrollment = _smsDbContext.Enrollments.Include(e => e.Student)
-                .FirstOrDefault(e=> e.EnrollmentId == enrollId);
+                .FirstOrDefault(e=> e.EnrollmentId == EnrollmentId);
+
 
             var viewModel = new ExamResultViewModel
             {
-                EnrollmentId = enrollId,
+                EnrollmentId = EnrollmentId,
                 Enrollment = enrollment
             };
 
@@ -36,7 +39,11 @@ namespace SchoolManagmentSystem.Controllers
             {
                _examRespository.AddResult(model);
                 TempData["SuccessMessage"] = "Marks saved successfully!";
-                return RedirectToAction("StudentDetails", model.Enrollment.StudentId);
+
+                var enrollment = _smsDbContext.Enrollments.Include(e => e.Student)
+                .FirstOrDefault(e => e.EnrollmentId == model.EnrollmentId);
+               
+                return RedirectToAction("StudentDetails", "Student",new {Id = enrollment.StudentId});
             }
             return View(model);
             
