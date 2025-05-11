@@ -11,5 +11,7 @@ namespace SchoolManagmentSystem.Models
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<ExamResult> ExamResults { get; set; }
         public DbSet<SubjectMark> subjectMarks { get; set; }
+        public DbSet<FeePayment> FeePayments { get; set; }
+        public DbSet<FeeSchedule> FeeSchedule { get; set; }
     }
 }
