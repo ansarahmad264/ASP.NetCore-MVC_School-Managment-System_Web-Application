@@ -1,4 +1,5 @@
-﻿using SchoolManagmentSystem.ViewModels;
+﻿using Microsoft.EntityFrameworkCore;
+using SchoolManagmentSystem.ViewModels;
 
 namespace SchoolManagmentSystem.Models
 {
@@ -35,6 +36,14 @@ namespace SchoolManagmentSystem.Models
 
             _context.SaveChanges();
 
+        }
+
+        public List<ExamResult>? GetExamResults(int EnrollmentId)
+        {
+           var result =  _context.ExamResults.Include(e=> e.SubjectMarks)
+                .Where(s=> s.EnrollmentId == EnrollmentId);
+
+            return result.ToList();
         }
     }
 }

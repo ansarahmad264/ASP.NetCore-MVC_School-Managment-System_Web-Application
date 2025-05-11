@@ -65,10 +65,17 @@
                             </span>
                         </div>
 
+                        <!-- REMINDER: Instead of Passing the Enrollment Id we can Pass the whole enrollment object -->
                         <a asp-action="AddMarks"
                            asp-controller="Exam"
                            asp-route-enrollmentId="@enrollment.EnrollmentId"
                            class="btn btn-outline-primary">Add Marks</a>
+
+                        <!-- ✅ View Result Button -->
+                        <a asp-action="ViewResult"
+                           asp-controller="Exam"
+                           asp-route-enrollmentId="@enrollment.EnrollmentId"
+                           class="btn btn-success">View Result</a>
 
                     </div>
                 }

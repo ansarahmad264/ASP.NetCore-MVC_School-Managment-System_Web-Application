@@ -48,5 +48,20 @@ namespace SchoolManagmentSystem.Controllers
             return View(model);
             
         }
+
+        public IActionResult ViewResult(int EnrollmentId)
+        {
+            var enrollment = _smsDbContext.Enrollments.Include(e => e.Student)
+                .FirstOrDefault(e => e.EnrollmentId == EnrollmentId);
+
+            var result = _examRespository.GetExamResults(EnrollmentId);
+
+            if (result != null && result.Any())
+            {
+                return View(result);
+            }
+            return View();
+            //return RedirectToAction("StudentDetails", "Student", new { id = enrollment.Student.StudentId });
+        }
     }
 }
