@@ -19,6 +19,9 @@ namespace SchoolManagmentSystem.Models
 
         [Required]
         public EnrollmentStatus Status { get; set; }  // Now using the enum
+        
+        [ValidateNever]
+        public DateTime? EnrollmentDate { get; set; } = DateTime.Now;
 
         [ValidateNever]
         public Student Student { get; set; }
