@@ -31,8 +31,7 @@ namespace SchoolManagmentSystem.Controllers
             }
 
             var fee = _feeRepository.GetFeeScheduleById(feeScheduleID);
-            Console.WriteLine("ENROLLMENT ID AT FEE CONTROLER POST FUNC:" + fee.EnrollmentId);
-            return RedirectToAction("ViewFeeRecord", "Fee", fee.EnrollmentId);
+            return RedirectToAction("ViewFeeRecord", "Fee", new { EnrollmentID = fee.EnrollmentId });
         }
     }
 }
