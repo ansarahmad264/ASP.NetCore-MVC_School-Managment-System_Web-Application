@@ -1,7 +1,9 @@
-﻿namespace SchoolManagmentSystem.Models
+﻿using SchoolManagmentSystem.ViewModels;
+
+namespace SchoolManagmentSystem.Models
 {
     public interface IEnrollmentRepository
     {
-        public void AddEnrollmentDetails(Enrollment enrollInfo);
+        public void AddEnrollmentDetails(EnrollmentViewModel enrollmentviewModel);
     }
 }

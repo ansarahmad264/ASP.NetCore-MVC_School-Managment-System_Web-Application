@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SchoolManagmentSystem.ViewModels;
 
 namespace SchoolManagmentSystem.Models
 {
@@ -10,8 +11,18 @@ namespace SchoolManagmentSystem.Models
             _smsDbContext = smsDbContext;
         }
 
-        public void AddEnrollmentDetails(Enrollment enrollment)
+        public void AddEnrollmentDetails(EnrollmentViewModel enrollmentviewModel)
         {
+
+            var enrollment = new Enrollment
+            {
+                StudentId = enrollmentviewModel.StudentId,
+                Class = enrollmentviewModel.Class,
+                Section = enrollmentviewModel.Section,
+                Status = enrollmentviewModel.Status,
+                EnrollmentDate = enrollmentviewModel.EnrollmentDate,
+            };
+
             var studentExists = _smsDbContext.Students.Any(s => s.StudentId == enrollment.StudentId);
             if (!studentExists)
                 throw new Exception("Student not found. Cannot enroll a non-existent student.");
@@ -32,7 +43,7 @@ namespace SchoolManagmentSystem.Models
                     EnrollmentId = enrollment.EnrollmentId,
                     Year = year,
                     Month = month,
-                    ExpectedAmount = 2000, // Placeholder — make dynamic later
+                    ExpectedAmount = enrollmentviewModel.FeeAmount, // Placeholder — make dynamic later
                     IsPaid = false,
                     PaidDate = null,
                     ReceiptNumber = null

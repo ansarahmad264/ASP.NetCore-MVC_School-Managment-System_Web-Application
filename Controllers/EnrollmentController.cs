@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SchoolManagmentSystem.Models;
+using SchoolManagmentSystem.ViewModels;
 
 namespace SchoolManagmentSystem.Controllers
 {
@@ -19,11 +20,11 @@ namespace SchoolManagmentSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult StudentEnrollment(Enrollment enrollInfo)
+        public IActionResult StudentEnrollment(EnrollmentViewModel enrollmentViewModel)
         {
             if(ModelState.IsValid)
             {
-                _enrollmentRepository.AddEnrollmentDetails(enrollInfo);
+                _enrollmentRepository.AddEnrollmentDetails(enrollmentViewModel);
 
             }
             
