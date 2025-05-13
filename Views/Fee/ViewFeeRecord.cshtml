@@ -1,0 +1,84 @@
+﻿@model List<FeeSchedule>
+@{
+    ViewData["Title"] = "Fee Schedule";
+}
+
+<h2 class="mb-4 text-primary">📊 Fee Schedule Details</h2>
+
+<table class="table table-bordered table-hover shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Month</th>
+            <th>Year</th>
+            <th>Expected Amount</th>
+            <th>Status</th>
+            <th>Paid Date</th>
+            <th>Receipt #</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var fee in Model)
+        {
+            <tr class="@(fee.IsPaid ? "table-success" : "table-warning")">
+                <td>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(fee.Month)</td>
+                <td>@fee.Year</td>
+                <td>Rs. @fee.ExpectedAmount.ToString("N0")</td>
+                <td>
+                    @if (fee.IsPaid)
+                    {
+                        <span class="badge bg-success">Paid</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Unpaid</span>
+                    }
+                </td>
+                <td>@(fee.PaidDate?.ToString("dd MMM yyyy") ?? "-")</td>
+                <td>@(string.IsNullOrEmpty(fee.ReceiptNumber) ? "-" : fee.ReceiptNumber)</td>
+                <td>
+                    @if (!fee.IsPaid)
+                    {
+                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#payModal" data-feeid="@fee.FeeScheduleId">💳 Pay Now</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="payModal" tabindex="-1" aria-labelledby="payModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="ViewFeeRecord" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="payModalLabel">Confirm Payment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="feeScheduleId" id="modal-fee-id" />
+                    <div class="mb-3">
+                        <label for="receiptNumber" class="form-label">Receipt Number</label>
+                        <input type="text" name="receiptNumber" id="receiptNumber" class="form-control" required placeholder="Enter receipt #">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Confirm Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var payModal = document.getElementById('payModal');
+        payModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var feeId = button.getAttribute('data-feeid');
+            var input = document.getElementById('modal-fee-id');
+            input.value = feeId;
+        });
+    </script>
+}

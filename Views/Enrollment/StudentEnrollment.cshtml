@@ -52,6 +52,12 @@
                     <span asp-validation-for="Status" class="text-danger small"></span>
                 </div>
 
+                <div class="col-md-6">
+                    <label asp-for="EnrollmentDate" class="form-label fw-semibold"></label>
+                    <input asp-for="EnrollmentDate" type="date" class="form-control" />
+                    <span asp-validation-for="EnrollmentDate" class="text-danger small"></span>
+                </div>
+
                 <input type="hidden" asp-for="StudentId" value="@student?.StudentId" />
 
                 <div class="col-12 mt-4">

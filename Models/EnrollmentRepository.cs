@@ -18,7 +18,29 @@ namespace SchoolManagmentSystem.Models
 
             _smsDbContext.Enrollments.Add(enrollment);
             _smsDbContext.SaveChanges();
-;
+
+            var enrollmentDate = enrollment.EnrollmentDate.Value; // Or pass it as a param
+            int startMonth = enrollmentDate.Month;
+            int year = enrollmentDate.Year;
+
+            var feeSchedules = new List<FeeSchedule>();
+
+            for (int month = startMonth; month <= 12; month++)
+            {
+                feeSchedules.Add(new FeeSchedule
+                {
+                    EnrollmentId = enrollment.EnrollmentId,
+                    Year = year,
+                    Month = month,
+                    ExpectedAmount = 2000, // Placeholder — make dynamic later
+                    IsPaid = false,
+                    PaidDate = null,
+                    ReceiptNumber = null
+                });
+            }
+
+            _smsDbContext.FeeSchedule.AddRange(feeSchedules);
+            _smsDbContext.SaveChanges();             
         }
     }
 }

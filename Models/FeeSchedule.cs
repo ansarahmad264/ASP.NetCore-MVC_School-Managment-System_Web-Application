@@ -23,7 +23,7 @@ namespace SchoolManagmentSystem.Models
 
         public DateTime? PaidDate { get; set; }
 
-        public string ReceiptNumber { get; set; }
+        public string? ReceiptNumber { get; set; }
 
         // Navigation
         public Enrollment Enrollment { get; set; }
