@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using SchoolManagmentSystem.ViewModels;
 
 namespace SchoolManagmentSystem.Models
 {
@@ -16,20 +17,45 @@ namespace SchoolManagmentSystem.Models
             return feeRecord.ToList();
         }
 
-        public void AddFee(int feeScheduleID, string receiptNumber)
+        public FeeSchedule AddFee(FeeViewModel model)
         {
-            var fee = _smsDbContext.FeeSchedule
-                .FirstOrDefault(f => f.FeeScheduleId == feeScheduleID);
+            using var transaction = _smsDbContext.Database.BeginTransaction();
 
-            if(fee == null || fee.IsPaid)
+            try
             {
-                throw new Exception("Invalid fee schedule or already paid.");
-            }
-            fee.IsPaid = true;
-            fee.PaidDate = DateTime.Now;
-            fee.ReceiptNumber = receiptNumber;
+                var fee = _smsDbContext.FeeSchedule
+                    .FirstOrDefault(f => f.FeeScheduleId == model.FeeScheduleId);
 
-            _smsDbContext.SaveChanges();
+                if (fee == null || fee.IsPaid)
+                    throw new Exception("Invalid fee schedule or already paid.");
+
+                fee.IsPaid = true;
+                fee.PaidDate = model.PaymentDate;
+                fee.ReceiptNumber = model.ReceiptNumber;
+
+                _smsDbContext.SaveChanges();
+
+                var feePayment = new FeePayment
+                {
+                    FeeScheduleId = model.FeeScheduleId,
+                    PaidAmount = model.PaidAmount,
+                    PaymentDate = model.PaymentDate,
+                    Method = model.Method,
+                    Notes = model.Notes
+                };
+
+                _smsDbContext.FeePayments.Add(feePayment);
+                _smsDbContext.SaveChanges();
+
+                transaction.Commit();
+                return fee; // return the updated fee schedule
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw; // bubble up to the controller
+            }
+
         }
 
         public FeeSchedule GetFeeScheduleById(int feeScheduleId)

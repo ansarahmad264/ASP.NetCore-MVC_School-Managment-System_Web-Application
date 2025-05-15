@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SchoolManagmentSystem.Models;
+using SchoolManagmentSystem.ViewModels;
 namespace SchoolManagmentSystem.Controllers
 {
     public class FeeController : Controller
@@ -17,21 +18,41 @@ namespace SchoolManagmentSystem.Controllers
             return View(FeeScheduleRecord);
         }
 
-        [HttpPost]
-        public IActionResult ViewFeeRecord(int feeScheduleID, string receiptNumber)
+      
+        [HttpGet]
+        public IActionResult FeePayment(int id)
         {
+            Console.WriteLine("FeePayment GET called");
+            var model = new FeeViewModel
+            {
+                FeeScheduleId = id,
+                PaymentDate = DateTime.Now
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult FeePayment(FeeViewModel model)
+        {
+            Console.WriteLine("FeePayment called" + model.FeeScheduleId);
             try
             {
-                _feeRepository.AddFee(feeScheduleID, receiptNumber);
-                TempData["Success"] = "Payment Recorded Successfully!";
+                if (ModelState.IsValid)
+                {                     
+                    var fee = _feeRepository.AddFee(model);
+                    TempData["Success"] = "Payment Recorded Successfully!";
+
+                    return RedirectToAction("ViewFeeRecord", new { EnrollmentID = fee.EnrollmentId });
+                }
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
             }
-
-            var fee = _feeRepository.GetFeeScheduleById(feeScheduleID);
-            return RedirectToAction("ViewFeeRecord", "Fee", new { EnrollmentID = fee.EnrollmentId });
+            Console.WriteLine("ModelState is not valid");
+            return View(model);
         }
     }
 }

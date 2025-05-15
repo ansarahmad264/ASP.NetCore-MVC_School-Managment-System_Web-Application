@@ -39,46 +39,10 @@
                 <td>
                     @if (!fee.IsPaid)
                     {
-                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#payModal" data-feeid="@fee.FeeScheduleId">💳 Pay Now</button>
+                        <a class="btn btn-sm btn-outline-primary" asp-action="FeePayment" asp-controller="Fee" asp-route-id="@fee.FeeScheduleId" >💳 Pay Now</a>
                     }
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-<!-- Bootstrap Modal -->
-<div class="modal fade" id="payModal" tabindex="-1" aria-labelledby="payModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-action="ViewFeeRecord" method="post">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="payModalLabel">Confirm Payment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="feeScheduleId" id="modal-fee-id" />
-                    <div class="mb-3">
-                        <label for="receiptNumber" class="form-label">Receipt Number</label>
-                        <input type="text" name="receiptNumber" id="receiptNumber" class="form-control" required placeholder="Enter receipt #">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Confirm Payment</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <script>
-        var payModal = document.getElementById('payModal');
-        payModal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
-            var feeId = button.getAttribute('data-feeid');
-            var input = document.getElementById('modal-fee-id');
-            input.value = feeId;
-        });
-    </script>
-}

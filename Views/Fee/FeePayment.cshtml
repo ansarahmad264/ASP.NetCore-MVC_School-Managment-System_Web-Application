@@ -1,0 +1,52 @@
+﻿@model SchoolManagmentSystem.ViewModels.FeeViewModel
+
+@{
+    ViewData["Title"] = "Pay Fee";
+}
+
+<h2>Pay Fee</h2>
+
+<form asp-action="FeePayment" method="post" class="needs-validation" novalidate>
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <input type="hidden" asp-for="FeeScheduleId" />
+
+    <div class="mb-3">
+        <label asp-for="PaidAmount" class="form-label"></label>
+        <input asp-for="PaidAmount" class="form-control" />
+        <span asp-validation-for="PaidAmount" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PaymentDate" class="form-label"></label>
+        <input asp-for="PaymentDate" class="form-control" type="datetime-local"
+               value="@Model.PaymentDate.ToString("yyyy-MM-ddTHH:mm")" />
+        <span asp-validation-for="PaymentDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Method" class="form-label"></label>
+        <input asp-for="Method" class="form-control" placeholder="e.g. Cash, Card, Bank Transfer" />
+        <span asp-validation-for="Method" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ReceiptNumber" class="form-label"></label>
+        <input asp-for="ReceiptNumber" class="form-control" />
+        <span asp-validation-for="ReceiptNumber" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">💰 Submit Payment</button>
+    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
