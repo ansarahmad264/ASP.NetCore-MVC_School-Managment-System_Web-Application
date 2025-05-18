@@ -17,6 +17,7 @@ builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IExamRespository,ExamRepository>();
 builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
 builder.Services.AddScoped<IFeeRepository, FeeRepository>();
+builder.Services.AddScoped<IAuditRepository, AuditRepository>();
 
 var app = builder.Build();
 

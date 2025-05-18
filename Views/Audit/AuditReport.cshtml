@@ -1,0 +1,96 @@
+﻿@model List<SchoolManagmentSystem.Models.FeePayment>
+
+@{
+    ViewBag.Title = "Audit Report";
+    var filter = ViewBag.Filter as SchoolManagmentSystem.ViewModels.AuditViewModel;
+    var totalCollected = Model?.Sum(p => p.PaidAmount) ?? 0;
+}
+
+<div class="container mt-5">
+
+    <!-- 🧾 FILTER SUMMARY + EXPORT OPTIONS -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-1">🔎 Filter Summary</h5>
+                <p class="mb-0 text-muted small">
+                    Year: <strong>@filter?.Year</strong>,
+                    @{
+                        var monthName = "All";
+                        if (filter?.Month > 0)
+                        {
+                            monthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(filter.Month.Value);
+                        }
+                    }
+                    Month: <strong>@monthName</strong>
+                    Class: <strong>@(string.IsNullOrEmpty(filter?.Class) ? "All" : filter.Class)</strong>,
+                    Section: <strong>@(string.IsNullOrEmpty(filter?.Section) ? "All" : filter.Section)</strong>
+                </p>
+            </div>
+
+            <div class="mt-2 mt-md-0">
+                <a href="@Url.Action("ExportToExcel", "Audit", new { year = filter?.Year, month = filter?.Month, className = filter?.Class, section = filter?.Section })"
+                   class="btn btn-outline-success me-2">
+                    📁 Export to Excel
+                </a>
+                <a href="@Url.Action("ExportToPdf", "Audit", new { year = filter?.Year, month = filter?.Month, className = filter?.Class, section = filter?.Section })"
+                   class="btn btn-outline-danger">
+                    🧾 Export to PDF
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📊 AUDIT REPORT CARD -->
+    <div class="card shadow rounded">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">📊 Audit Report</h4>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-outline-light btn-sm">⬅ Back to Dashboard</a>
+        </div>
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <thead class="table-dark text-center">
+                            <tr>
+                                <th>Class</th>
+                                <th>Section</th>
+                                <th>Paid Amount</th>
+                                <th>Payment Date</th>
+                                <th>Method</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="text-center">
+                                    <td>@item.FeeSchedule?.Enrollment?.Class</td>
+                                    <td>@item.FeeSchedule?.Enrollment?.Section</td>
+                                    <td><strong>Rs. @item.PaidAmount.ToString("N0")</strong></td>
+                                    <td>@item.PaymentDate.ToString("dd MMM yyyy")</td>
+                                    <td>@item.Method</td>
+                                    <td>@item.Notes</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot class="table-light">
+                            <tr>
+                                <td colspan="3" class="text-end fw-bold">Total Collected:</td>
+                                <td class="text-center fw-bold text-success">Rs. @totalCollected.ToString("N0")</td>
+                                <td colspan="3"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info text-center">
+                    No fee payments found for the selected filters.
+                </div>
+            }
+        </div>
+    </div>
+</div>

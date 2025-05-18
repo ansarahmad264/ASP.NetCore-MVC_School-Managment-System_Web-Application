@@ -1,0 +1,54 @@
+﻿@model SchoolManagmentSystem.ViewModels.AuditViewModel
+
+@{
+    ViewBag.Title = "Audit Search";
+    var months = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames
+        .Where(m => !string.IsNullOrEmpty(m)).Select((name, index) => new { Name = name, Value = index + 1 }).ToList();
+}
+
+<div class="container mt-5">
+    <div class="card shadow rounded">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">📅 Search Audit Report</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="AuditSearch" asp-controller="Audit" method="post">
+                <div class="row g-3">
+
+                    <div class="col-md-3">
+                        <label for="Year" class="form-label">Year <span class="text-danger">*</span></label>
+                        <input type="number" id="Year" name="Year" class="form-control" placeholder="e.g. 2025" required />                        
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="Month" class="form-label">Month (Optional)</label>
+                        <select id="Month" name="Month" class="form-select">
+                            <option value="">-- Select Month (Optional) --</option>
+                            @foreach (var m in months)
+                            {
+                                <option value="@m.Value">@m.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="Class" class="form-label">Class (Optional)</label>
+                        <input type="text" id="Class" name="Class" class="form-control" placeholder="e.g. 10th Grade" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="Section" class="form-label">Section (Optional)</label>
+                        <input type="text" id="Section" name="Section" class="form-control" placeholder="e.g. A" />
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success btn-lg shadow">
+                        🔍 Get Audit Report
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
